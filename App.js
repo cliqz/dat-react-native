@@ -22,20 +22,9 @@ const api = apiFactory({
 });
 
 const load = async address => {
-  // create a dat and work with it's hyperdrive
-  const dat = await api.createDat({persist: true});
-  await dat.ready;
-  console.log('Created a Dat at address', dat.drive.key.toString('hex'));
-  dat.drive.writeFile('file.txt', Buffer.from('hello world', 'utf8'), () =>
-    console.log('wrote some data into the dat!'),
-  );
-  // join and leave the network
-  dat.joinSwarm();
-  dat.leaveSwarm();
-
   // load an existing dat in memory
   const existing = await api.getDat(address, {
-    persist: false,
+    persist: true,
     driveOptions: {
       sparse: true,
     },
@@ -43,7 +32,7 @@ const load = async address => {
 
   // wait for data
   await new Promise(async (resolve, reject) => {
-    setTimeout(reject.bind(null, 'timeout'), 5000);
+    setTimeout(reject.bind(null, 'timeout'), 10000);
     await existing.ready;
     resolve();
   });
@@ -56,10 +45,6 @@ const load = async address => {
       resolve(files);
     });
   });
-
-  // close all dats and cleanup
-  api.shutdown();
-
   return files;
 };
 
