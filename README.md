@@ -1,4 +1,4 @@
-# DAT React Native
+# [Archived] DAT React Native
 
 This is a proof of concept integration of DAT in React Native.
 
